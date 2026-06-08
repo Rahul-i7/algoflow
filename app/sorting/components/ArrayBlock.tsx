@@ -1,6 +1,6 @@
 import { motion } from "motion/react"
 
-export default function ArrayBlock({value, active}: {value: number, active: boolean}) {
+export default function ArrayBlock({value}: {value: number}) {
     return (
         <motion.div 
         className="w-12 bg-primary text-white flex flex-col items-center justify-end"

@@ -18,11 +18,47 @@ export default function SortingPage() {
   const randomize = () => {
     array.setArray(generateRandomArray(value))
     array.reset()
+    setPlay(false)
+    setComparisons(0)
+    setSwaps(0)
   }
 
   const startSorting = () => {
-    selectedAlgo.function(array.array)
+    const events = selectedAlgo.function(array.array)
+    array.setEvents(events)
+    array.reset()
+    setPlay(true)
   }
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (play) {
+      if (array.events.length === 0) {
+        startSorting();
+      } else {
+        interval = setInterval(() => {
+          const state = useVisualizerStore.getState();
+          if (state.currentStep < state.events.length - 1) {
+            state.nextStep();
+          } else {
+            setPlay(false);
+          }
+        }, 100);
+      }
+    }
+    return () => clearInterval(interval);
+  }, [play, array.events.length]);
+
+  useEffect(() => {
+    if (array.events.length > 0 && array.currentStep < array.events.length) {
+       const currentEvents = array.events.slice(0, array.currentStep + 1);
+       setComparisons(currentEvents.filter(e => e.type === 'compare').length);
+       setSwaps(currentEvents.filter(e => e.type === 'swap').length);
+    } else if (array.events.length === 0 || array.currentStep === 0) {
+       setComparisons(0);
+       setSwaps(0);
+    }
+  }, [array.currentStep, array.events]);
 
   useEffect(() => {
     randomize()
@@ -48,7 +84,7 @@ export default function SortingPage() {
             <p className="text-primary text-sm font-medium">{swaps}</p>
           </div>
         </div>
-        <ArrayVisual array={array.array}/>
+        <ArrayVisual array={array.events.length > 0 && array.currentStep < array.events.length ? array.events[array.currentStep].array : array.array}/>
       </div>
 
 
