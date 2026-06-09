@@ -1,14 +1,15 @@
 import { create } from "zustand"
 import { SortEvent } from "../../types/events"
+import { ArrayBar } from "@/types/array"
 
 type VisualizerState = {
-    array: number[]
+    array: ArrayBar[]
     events: SortEvent[]
     currentStep: number
     isPlaying: boolean
     playbackSpeed: number
     
-    setArray: (array: number[]) => void
+    setArray: (array: ArrayBar[]) => void
     setEvents: (events: SortEvent[]) => void
     nextStep: () => void
     prevStep: () => void

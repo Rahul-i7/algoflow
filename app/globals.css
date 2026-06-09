@@ -13,6 +13,10 @@
     --color-border-primary: var(--border-primary);
     --color-warning: hsl(357, 100%, 45%);
     --color-warning-hover: hsl(357, 100%, 30%);
+    --color-comparing: #3A30A786;
+    --color-swapping: #3A30A790;
+    --color-sorted: #24dc58;
+    --color-default: #cbd5e1;
 }
 
 :root {

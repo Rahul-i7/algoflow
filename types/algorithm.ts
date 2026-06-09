@@ -1,4 +1,5 @@
 import { SortEvent } from "./events"
+import { ArrayBar } from "./array"
 
 export type algorithm = {
   "name": string,
@@ -11,5 +12,5 @@ export type algorithm = {
   "stable": boolean,
   "spaceComplexity": string,
   "spaceComplexityInfo": string,
-  "function": (input: number[]) => SortEvent[]
+  "function": (input: ArrayBar[]) => SortEvent[]
 }

@@ -60,9 +60,6 @@ export default function SortingPage() {
     }
   }, [array.currentStep, array.events]);
 
-  useEffect(() => {
-    randomize()
-  }, [value])
   return (
     <>
       <Controller
@@ -84,7 +81,11 @@ export default function SortingPage() {
             <p className="text-primary text-sm font-medium">{swaps}</p>
           </div>
         </div>
-        <ArrayVisual array={array.events.length > 0 && array.currentStep < array.events.length ? array.events[array.currentStep].array : array.array}/>
+        {array.array.length ? (
+          <ArrayVisual array={array.events.length > 0 && array.currentStep < array.events.length ? array.events[array.currentStep].array : array.array}/>
+        ) : (
+          <p className="text-text-tertiary">Start by Generating a random Array or You're custom array</p>
+        )}
       </div>
 
 
@@ -121,15 +122,15 @@ export default function SortingPage() {
             <p className="text-text-secondary">Pivot/Target Element</p>
           </div>
           <div className="my-2 flex items-center font-medium gap-3">
-            <div className="h-5 w-5 bg-purple-500"/>
+            <div className="h-5 w-5 bg-comparing"/>
             <p className="text-text-secondary">Comparing</p>
           </div>
           <div className="my-2 flex items-center font-medium gap-3">
-            <div className="h-5 w-5 bg-green-500"/>
+            <div className="h-5 w-5 bg-swapping"/>
             <p className="text-text-secondary">Swapping</p>
           </div>
           <div className="my-2 flex items-center font-medium gap-3">
-            <div className="h-5 w-5 bg-blue-500"/>
+            <div className="h-5 w-5 bg-sorted"/>
             <p className="text-text-secondary">Sorted</p>
           </div>
         </div>
