@@ -56,11 +56,67 @@ export const algorithms = [
   }
 ]
 
+function partition(arr: ArrayBar[], events: SortEvent[], low: number, high: number) {
+  let pivot = arr[high];
+  let i = low - 1;
+  for (let j = low; j < high; j++) {
+    events.push({
+      type: "compare",
+      indices: { i: j, j: high },
+      array: arr.map((bar, index) => ({
+        ...bar,
+        state: index === j || index === high ? "comparing" : bar.state
+      })),
+      message: `Comparing ${arr[j].value} with pivot ${arr[high].value}`,
+    })
+    if (arr[j].value < pivot.value) {
+      i++;
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+      events.push({
+        type: "swap",
+        indices: { i: i, j: j },
+        array: arr.map((bar, index) => ({
+          ...bar,
+          state: index === i || index === j ? "swapping" : bar.state
+        })),
+        message: `Swapping ${arr[j].value} with ${arr[i].value}`,
+      })
+    }
+  }
+  [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]]
+  return i + 1;
+}
+
+function quickSortHelper(arr: ArrayBar[], events: SortEvent[], low: number, high: number) {
+  if (low < high) {
+    let pi = partition(arr, events, low, high)
+    
+    arr[pi] = { ...arr[pi], state: "sorted" }
+    events.push({
+      type: "sorted",
+      indices: [pi],
+      array: arr.map(bar => ({ ...bar })),
+      message: `${arr[pi].value} is now sorted`,
+    })
+
+    quickSortHelper(arr, events, low, pi - 1);
+    quickSortHelper(arr, events, pi + 1, high)
+  } else if (low === high) {
+    arr[low] = { ...arr[low], state: "sorted" }
+    events.push({
+      type: "sorted",
+      indices: [low],
+      array: arr.map(bar => ({ ...bar })),
+      message: `${arr[low].value} is now sorted`,
+    })
+  }
+}
+
 function quickSortFunction(input: ArrayBar[]) {
-  const arr = input.map(bar => ({ ...bar, state: "default" as BarState }))
+  const arr = input.map(bar => ({...bar, state: 'default' as BarState}));
   const events: SortEvent[] = []
-  const n = arr.length
-  
+  quickSortHelper(arr, events, 0, arr.length - 1)
+  return events;
 }
 
 function heapify(arr: ArrayBar[], events: SortEvent[], heapSize: number, i: number) {

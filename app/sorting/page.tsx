@@ -6,9 +6,10 @@ import { generateRandomArray } from "@/utils/generateRandomArray"
 import { algorithm } from "@/types/algorithm"
 import ArrayVisual from "./components/ArrayVisual"
 import { useVisualizerStore } from "../store/visualizerStore"
+import LiveLog from "./components/LiveLog"
 
 export default function SortingPage() {
-  const [liveLog, setLiveLog] = useState(true)
+  const [liveLog, setLiveLog] = useState(false)
   const [value, setValue] = useState(10)
   const [play, setPlay] = useState(false)
   const [selectedAlgo, setSelectedAlgo] = useState<algorithm>(algorithms[0])
@@ -51,12 +52,12 @@ export default function SortingPage() {
 
   useEffect(() => {
     if (array.events.length > 0 && array.currentStep < array.events.length) {
-       const currentEvents = array.events.slice(0, array.currentStep + 1);
-       setComparisons(currentEvents.filter(e => e.type === 'compare').length);
-       setSwaps(currentEvents.filter(e => e.type === 'swap').length);
+      const currentEvents = array.events.slice(0, array.currentStep + 1);
+      setComparisons(currentEvents.filter(e => e.type === 'compare').length);
+      setSwaps(currentEvents.filter(e => e.type === 'swap').length);
     } else if (array.events.length === 0 || array.currentStep === 0) {
-       setComparisons(0);
-       setSwaps(0);
+      setComparisons(0);
+      setSwaps(0);
     }
   }, [array.currentStep, array.events]);
 
@@ -70,21 +71,27 @@ export default function SortingPage() {
         randomize={randomize}
       />
 
-      <div className="flex relative justify-center items-center border border-border-primary mx-10 rounded-lg h-[60vh] mt-20">
-        <div className="absolute right-5 -top-15 flex gap-4">
-          <div className="flex items-center gap-4 bg-primary/5 px-5 py-2 rounded-full">
-            <p className="text-text-tertiary text-sm font-semibold">COMPARISONS</p>
-            <p className="text-primary text-sm font-medium">{comparisons}</p>
+      <div className="flex w-full justify-around gap-10 px-10">
+        <div className="flex grow relative justify-center items-center border border-border-primary rounded-lg h-[60vh] mt-20">
+          <div className="absolute right-5 -top-15 flex gap-4">
+            <div className="flex items-center gap-4 bg-primary/5 px-5 py-2 rounded-full">
+              <p className="text-text-tertiary text-sm font-semibold">COMPARISONS</p>
+              <p className="text-primary text-sm font-medium">{comparisons}</p>
+            </div>
+            <div className="flex items-center gap-4 bg-primary/5 px-5 py-2 rounded-full">
+              <p className="text-text-tertiary text-sm font-semibold">SWAPS</p>
+              <p className="text-primary text-sm font-medium">{swaps}</p>
+            </div>
           </div>
-          <div className="flex items-center gap-4 bg-primary/5 px-5 py-2 rounded-full">
-            <p className="text-text-tertiary text-sm font-semibold">SWAPS</p>
-            <p className="text-primary text-sm font-medium">{swaps}</p>
-          </div>
+          {array.array.length ? (
+            <ArrayVisual array={array.events.length > 0 && array.currentStep < array.events.length ? array.events[array.currentStep].array : array.array} />
+          ) : (
+            <p className="text-text-tertiary">Start by Generating a random Array or Your custom array</p>
+          )}
         </div>
-        {array.array.length ? (
-          <ArrayVisual array={array.events.length > 0 && array.currentStep < array.events.length ? array.events[array.currentStep].array : array.array}/>
-        ) : (
-          <p className="text-text-tertiary">Start by Generating a random Array or You're custom array</p>
+
+        {liveLog && (
+          <LiveLog />
         )}
       </div>
 
@@ -118,19 +125,19 @@ export default function SortingPage() {
         <div className="border border-border-primary p-5 rounded-lg">
           <p className="text-text-tertiary mb-3">COLOR LEGEND</p>
           <div className="my-2 flex items-center font-medium gap-3">
-            <div className="h-5 w-5 bg-primary"/>
+            <div className="h-5 w-5 bg-primary" />
             <p className="text-text-secondary">Pivot/Target Element</p>
           </div>
           <div className="my-2 flex items-center font-medium gap-3">
-            <div className="h-5 w-5 bg-comparing"/>
+            <div className="h-5 w-5 bg-comparing" />
             <p className="text-text-secondary">Comparing</p>
           </div>
           <div className="my-2 flex items-center font-medium gap-3">
-            <div className="h-5 w-5 bg-swapping"/>
+            <div className="h-5 w-5 bg-swapping" />
             <p className="text-text-secondary">Swapping</p>
           </div>
           <div className="my-2 flex items-center font-medium gap-3">
-            <div className="h-5 w-5 bg-sorted"/>
+            <div className="h-5 w-5 bg-sorted" />
             <p className="text-text-secondary">Sorted</p>
           </div>
         </div>

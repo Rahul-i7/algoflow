@@ -15,7 +15,7 @@ export default function ArrayBar({value, state = "default"}: {value: number, sta
     return (
         <motion.div 
         layout
-        className={`w-12 ${stateColors[state]} rounded-t-md flex flex-col items-center justify-end`}
+        className={`w-12 ${stateColors[state]} flex flex-col items-center justify-end`}
         animate={{
             height: value*3
         }}
