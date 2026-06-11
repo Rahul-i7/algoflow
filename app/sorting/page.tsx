@@ -181,7 +181,7 @@ export default function SortingPage() {
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -10 }}
                                     transition={{ duration: 0.4, ease: "easeOut" }}
-                                    className="absolute -bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-sorted/15 border border-sorted/30 text-sorted px-5 py-2.5 rounded-xl shadow-lg backdrop-blur-sm"
+                                    className="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-sorted/15 border border-sorted/30 text-sorted px-5 py-2.5 rounded-xl shadow-lg backdrop-blur-sm"
                                 >
                                     <Trophy size={18} />
                                     <span className="text-sm font-semibold">Sorting Complete!</span>

@@ -157,17 +157,9 @@ export default function Controller({
                 {/* Divider */}
                 <div className="w-px h-9 bg-border-primary mx-1 hidden sm:block" />
 
-                {/* Live Log Toggle */}
-                <div className="flex items-center gap-2 ml-auto">
-                    <span className="text-xs font-semibold tracking-wider text-text-tertiary uppercase">Live Log</span>
-                    <Toggle value={liveLog} toggle={() => setLiveLog(!liveLog)} />
-                </div>
-            </div>
-
-            {/* Bottom row: Array Size + Speed */}
-            <div className="flex items-center gap-6 flex-wrap">
+                <div className="flex items-center gap-5 flex-wrap">
                 {/* Array Size */}
-                <div className="flex items-center gap-3 flex-1 min-w-[200px] max-w-[400px]">
+                <div className="flex items-center gap-2 flex-1 min-w-[200px] max-w-[400px]">
                     <span className="text-[10px] font-semibold tracking-wider text-text-tertiary uppercase whitespace-nowrap">
                         Size
                     </span>
@@ -196,7 +188,7 @@ export default function Controller({
                 </div>
 
                 {/* Speed Control */}
-                <div className="flex items-center gap-3 flex-1 min-w-[200px] max-w-[350px]">
+                <div className="flex items-center gap-2 flex-1 min-w-[200px] max-w-[350px]">
                     <Gauge size={14} className="text-text-tertiary" />
                     <span className="text-[10px] font-semibold tracking-wider text-text-tertiary uppercase whitespace-nowrap">
                         Speed
@@ -218,6 +210,16 @@ export default function Controller({
                     </div>
                 </div>
             </div>
+
+            <div className="w-px h-9 bg-border-primary ml-1 hidden sm:block" />
+
+                {/* Live Log Toggle */}
+                <div className="flex items-center gap-2 ml-auto">
+                    <span className="text-xs font-semibold tracking-wider text-text-tertiary uppercase">Live Log</span>
+                    <Toggle value={liveLog} toggle={() => setLiveLog(!liveLog)} />
+                </div>
+            </div>
+            
         </div>
     )
 }

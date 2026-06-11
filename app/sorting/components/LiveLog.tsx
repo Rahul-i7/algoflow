@@ -89,12 +89,12 @@ export default function LiveLog() {
             animate={{ opacity: 1, x: 0, width: 360 }}
             exit={{ opacity: 0, x: 30, width: 0 }}
             transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-            className="glass-card h-[calc(55vh+40px)] p-5 flex flex-col shrink-0 overflow-hidden"
+            className="bg-[#2c2c3a] rounded-xl border border-border-primary h-[calc(65vh+40px)] p-5 flex flex-col shrink-0 overflow-hidden"
         >
             <div className="flex items-center justify-between mb-1">
                 <div className="flex items-center gap-2">
-                    <TerminalSquare strokeWidth={2.5} size={18} className="text-primary" />
-                    <h2 className="text-text-primary font-bold text-base tracking-wide">Execution Log</h2>
+                    <TerminalSquare strokeWidth={2.5} size={18} className="text-red-400" />
+                    <h2 className="text-slate-100 font-bold text-base tracking-wide">Execution Log</h2>
                 </div>
                 {logs.length > 0 && (
                     <button
@@ -106,11 +106,11 @@ export default function LiveLog() {
                     </button>
                 )}
             </div>
-            <p className="text-text-tertiary font-semibold text-[10px] tracking-wider uppercase mb-3">
+            <p className="text-slate-400 font-semibold text-[10px] tracking-wider uppercase mb-3">
                 Real-time status updates
             </p>
             
-            <div className="border-t border-border-primary mb-3" />
+            <div className="border-t border-gray-600 mb-3" />
 
             <div ref={scrollRef} className="overflow-y-auto flex flex-col gap-3 pr-1 custom-scrollbar flex-1">
                 <AnimatePresence initial={false}>
@@ -130,7 +130,7 @@ export default function LiveLog() {
                                     </span>
                                 )}
                             </div>
-                            <p className="text-text-secondary text-[13px] leading-relaxed">
+                            <p className="text-slate-300 text-[13px] leading-relaxed">
                                 {log.content}
                             </p>
                         </motion.div>

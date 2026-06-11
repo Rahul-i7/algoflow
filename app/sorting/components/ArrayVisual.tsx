@@ -12,7 +12,7 @@ export default function ArrayVisual({ array }: { array: ArrayBarType[] }) {
     const gap = array.length <= 15 ? 6 : array.length <= 30 ? 4 : array.length <= 50 ? 2 : 1
 
     return (
-        <div className="flex items-end justify-center w-full h-full px-4 pb-6 pt-2" style={{ gap }}>
+        <div className="flex items-end justify-center w-full h-full px-4 pb-6 pt-2 mb-10" style={{ gap }}>
             {array.map((bar) => (
                 <ArrayBar
                     key={bar.id}
