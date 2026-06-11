@@ -1,106 +1,223 @@
 "use client"
 import { algorithms } from "@/algorithms/algorithms"
-import { RotateCw, SquarePen, ArrowRightToLine, ArrowLeftToLine, Play, Pause } from "lucide-react"
+import {
+    RotateCw,
+    SkipBack,
+    SkipForward,
+    Play,
+    Pause,
+    Gauge,
+} from "lucide-react"
 import Toggle from "./Toggle"
 import { algorithm } from "@/types/algorithm"
 import { motion } from "motion/react"
+import { useVisualizerStore } from "../../store/visualizerStore"
+
+const SPEED_OPTIONS = [0.25, 0.5, 1, 1.5, 2, 3, 4]
 
 export default function Controller({
-  selectedAlgo,
-  setSelectedAlgo,
-  liveLog,
-  setLiveLog,
-  value,
-  setValue,
-  play,
-  setPlay,
-  randomize
+    selectedAlgo,
+    setSelectedAlgo,
+    liveLog,
+    setLiveLog,
+    value,
+    setValue,
+    play,
+    setPlay,
+    randomize
 }: {
-  selectedAlgo: algorithm
-  setSelectedAlgo: (value: algorithm) => void
-  liveLog: boolean
-  setLiveLog: (value: boolean) => void
-  value: number
-  setValue: (value: number) => void
-  play: boolean
-  setPlay: (value: boolean) => void
-  randomize: () => void
+    selectedAlgo: algorithm
+    setSelectedAlgo: (value: algorithm) => void
+    liveLog: boolean
+    setLiveLog: (value: boolean) => void
+    value: number
+    setValue: (value: number) => void
+    play: boolean
+    setPlay: (value: boolean) => void
+    randomize: () => void
 }) {
+    const store = useVisualizerStore()
+    const { events, currentStep, playbackSpeed, setPlaybackSpeed } = store
+
+    const hasEvents = events.length > 0
+    const isAtStart = currentStep <= 0
+    const isAtEnd = hasEvents && currentStep >= events.length - 1
+    const totalSteps = events.length
+
+    const handlePrev = () => {
+        if (play) setPlay(false)
+        store.prevStep()
+    }
+
+    const handleNext = () => {
+        if (!hasEvents) return
+        if (play) setPlay(false)
+        store.nextStep()
+    }
+
+    const handleAlgoChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const found = algorithms.find(a => a.name === e.target.value)
+        if (found) {
+            setPlay(false)
+            store.clearEvents()
+            setSelectedAlgo(found)
+        }
+    }
+
+    const handleArraySizeChange = (newSize: number) => {
+        setValue(newSize)
+    }
+
+    const handleSpeedChange = (speed: number) => {
+        setPlaybackSpeed(speed)
+    }
+
     return (
-        <div className="flex items-center gap-3 border border-border-primary px-4 py-5 w-[95vw] mx-auto rounded-lg mt-10">
-        <>
-          <div className="flex justify-center relative border border-border-primary w-45 p-3 rounded-lg">
-            <p className="text-text-tertiary absolute left-3 -top-3 bg-bg-primary px-0.5 text-sm">ALGORITHM</p>
-            <select value={selectedAlgo.name} onChange={(e) => setSelectedAlgo(algorithms.find(a => a.name === e.target.value) || algorithms[0])} name="algorithm" id="algorithm" className="text-text-secondary cursor-pointer w-full outline-none">
-              {algorithms.map((algo) => (
-                <option key={algo.name} value={algo.name}>{algo.name}</option>
-              ))}
-            </select>
-          </div>
-          <motion.div
-            className="flex items-center justify-center gap-2 border border-primary w-45 p-3 rounded-lg cursor-pointer hover:bg-bg-secondary transition-colors"
-            onClick={() => randomize()}
-            whileTap={{scale: 0.95}}
-            transition={{duration: 0.2, ease: "easeInOut"}}
-          >
-            <RotateCw size={20} className="text-primary" />
-            <p className="text-primary">Randomize</p>
-          </motion.div>
-          <motion.div
-            className="flex items-center justify-center gap-2 border border-border-primary w-45 p-3 rounded-lg cursor-pointer hover:bg-bg-secondary transition-colors"
-            whileTap={{scale: 0.95}}
-            transition={{duration: 0.05, ease: "easeInOut"}}
-          >
-            <SquarePen className="text-text-secondary" size={20} />
-            <p className="text-text-secondary">Custom Array</p>
-          </motion.div>
-        </>
-        <div className="border-2 border-border-primary rounded-lg h-10 mx-2" />
+        <div className="glass-card flex flex-col gap-4 w-[96vw] mx-auto mt-6 px-5 py-4">
+            {/* Top row: Algorithm + Actions */}
+            <div className="flex items-center gap-3 flex-wrap">
+                {/* Algorithm Selector */}
+                <div className="relative border border-border-primary rounded-lg px-3 py-2.5 min-w-[180px]">
+                    <span className="absolute -top-2.5 left-3 bg-bg-elevated px-1.5 text-[10px] font-semibold tracking-wider text-text-tertiary uppercase">
+                        Algorithm
+                    </span>
+                    <select
+                        value={selectedAlgo.name}
+                        onChange={handleAlgoChange}
+                        id="algorithm-select"
+                        className="text-text-primary cursor-pointer w-full outline-none text-sm font-medium bg-transparent"
+                    >
+                        {algorithms.map((algo) => (
+                            <option key={algo.name} value={algo.name}>{algo.name}</option>
+                        ))}
+                    </select>
+                </div>
 
-        <div className="flex grow gap-13 justify-between px-18">
-          <div className="flex flex-col gap-1 w-full">
-            <div className="flex items-center justify-between">
-              <p className="text-text-tertiary">ARRAY SIZE</p>
-              <input
-                value={value}
-                type="text"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                onChange={(e) => {
-                  const numericVal = e.target.value.replace(/\D/g, '');
-                  setValue(numericVal === '' ? 0 : Number(numericVal));
-                }}
-                className="w-9 px-1 outline-none border border-border-primary/0 focus:border-border-primary/50 rounded-md text-right text-primary"
-              />
+                {/* Randomize */}
+                <motion.button
+                    id="randomize-btn"
+                    className="flex items-center gap-2 border border-primary/40 bg-primary-muted px-4 py-2.5 rounded-lg cursor-pointer hover:bg-primary/15 transition-colors text-sm font-medium text-primary"
+                    onClick={randomize}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                >
+                    <RotateCw size={16} />
+                    Randomize
+                </motion.button>
+
+                {/* Divider */}
+                <div className="w-px h-9 bg-border-primary mx-1 hidden sm:block" />
+
+                {/* Playback Controls */}
+                <div className="flex items-center gap-1.5">
+                    <motion.button
+                        id="prev-step-btn"
+                        className="flex items-center justify-center h-9 w-9 rounded-lg border border-border-primary text-text-secondary hover:bg-bg-tertiary hover:text-text-primary transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+                        onClick={handlePrev}
+                        disabled={isAtStart || !hasEvents}
+                        whileTap={{ scale: 0.9 }}
+                        aria-label="Previous step"
+                    >
+                        <SkipBack size={16} />
+                    </motion.button>
+
+                    <motion.button
+                        id="play-pause-btn"
+                        className="flex items-center justify-center h-10 w-10 rounded-xl bg-primary text-white cursor-pointer hover:bg-primary-hover transition-colors shadow-md"
+                        onClick={() => setPlay(!play)}
+                        whileTap={{ scale: 0.9 }}
+                        aria-label={play ? "Pause" : "Play"}
+                    >
+                        {play ? (
+                            <Pause size={18} fill="white" strokeWidth={0} />
+                        ) : (
+                            <Play size={18} fill="white" strokeWidth={0} className="ml-0.5" />
+                        )}
+                    </motion.button>
+
+                    <motion.button
+                        id="next-step-btn"
+                        className="flex items-center justify-center h-9 w-9 rounded-lg border border-border-primary text-text-secondary hover:bg-bg-tertiary hover:text-text-primary transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+                        onClick={handleNext}
+                        disabled={isAtEnd || !hasEvents}
+                        whileTap={{ scale: 0.9 }}
+                        aria-label="Next step"
+                    >
+                        <SkipForward size={16} />
+                    </motion.button>
+                </div>
+
+                {/* Step Counter */}
+                {hasEvents && (
+                    <div className="text-xs font-mono text-text-tertiary bg-bg-secondary px-3 py-1.5 rounded-md">
+                        {currentStep + 1} / {totalSteps}
+                    </div>
+                )}
+
+                {/* Divider */}
+                <div className="w-px h-9 bg-border-primary mx-1 hidden sm:block" />
+
+                {/* Live Log Toggle */}
+                <div className="flex items-center gap-2 ml-auto">
+                    <span className="text-xs font-semibold tracking-wider text-text-tertiary uppercase">Live Log</span>
+                    <Toggle value={liveLog} toggle={() => setLiveLog(!liveLog)} />
+                </div>
             </div>
-            <input
-              type="range"
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer
-            [&::-webkit-slider-runnable-track]:bg-gray-300 [&::-webkit-slider-runnable-track]:rounded-full
-            [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4
-            [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-blue-600
-            [&::-webkit-slider-thumb]:shadow-lg"
-              min={5}
-              max={100}
-              value={value}
-              onChange={(e) => setValue(Number(e.target.value))}
-            />
-          </div>
-          <div className="flex justify-between items-center gap-2">
-            <ArrowLeftToLine className="h-8 w-8 text-text-secondary border border-border-primary p-1.5 rounded-lg cursor-pointer" />
-            <div className="flex items-center gap-2 bg-primary p-1.5 rounded-lg">
-              {play ? <Pause size={40} fill="white" strokeWidth={0} onClick={() => setPlay(false)} className="p-1.5 rounded-lg cursor-pointer" /> : <Play size={40} fill="white" strokeWidth={0} onClick={() => setPlay(true)} className="text-text-secondary p-1.5 rounded-lg cursor-pointer" />}
+
+            {/* Bottom row: Array Size + Speed */}
+            <div className="flex items-center gap-6 flex-wrap">
+                {/* Array Size */}
+                <div className="flex items-center gap-3 flex-1 min-w-[200px] max-w-[400px]">
+                    <span className="text-[10px] font-semibold tracking-wider text-text-tertiary uppercase whitespace-nowrap">
+                        Size
+                    </span>
+                    <input
+                        id="array-size-slider"
+                        type="range"
+                        min={5}
+                        max={100}
+                        value={value}
+                        onChange={(e) => handleArraySizeChange(Number(e.target.value))}
+                        className="flex-1"
+                    />
+                    <input
+                        id="array-size-input"
+                        value={value}
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        onChange={(e) => {
+                            const numericVal = e.target.value.replace(/\D/g, '');
+                            const num = numericVal === '' ? 5 : Math.min(100, Math.max(5, Number(numericVal)));
+                            handleArraySizeChange(num);
+                        }}
+                        className="w-10 px-1.5 py-0.5 outline-none border border-border-primary rounded-md text-center text-sm font-mono text-primary bg-transparent focus:border-primary transition-colors"
+                    />
+                </div>
+
+                {/* Speed Control */}
+                <div className="flex items-center gap-3 flex-1 min-w-[200px] max-w-[350px]">
+                    <Gauge size={14} className="text-text-tertiary" />
+                    <span className="text-[10px] font-semibold tracking-wider text-text-tertiary uppercase whitespace-nowrap">
+                        Speed
+                    </span>
+                    <div className="flex items-center gap-1">
+                        {SPEED_OPTIONS.map((speed) => (
+                            <button
+                                key={speed}
+                                onClick={() => handleSpeedChange(speed)}
+                                className={`px-2 py-1 rounded-md text-xs font-medium transition-all cursor-pointer ${
+                                    playbackSpeed === speed
+                                        ? "bg-primary text-white shadow-sm"
+                                        : "text-text-tertiary hover:text-text-secondary hover:bg-bg-tertiary"
+                                }`}
+                            >
+                                {speed}x
+                            </button>
+                        ))}
+                    </div>
+                </div>
             </div>
-            <ArrowRightToLine className="h-8 w-8 text-text-secondary border border-border-primary p-1.5 rounded-lg cursor-pointer" />
-          </div>
         </div>
-
-        <div className="border-2 border-border-primary rounded-lg h-10 mx-2" />
-
-        <div className="flex items-center gap-2">
-          <p>LIVE LOG</p>
-          <Toggle value={liveLog} toggle={() => setLiveLog(!liveLog)} />
-        </div>
-      </div>
     )
 }

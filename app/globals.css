@@ -5,44 +5,176 @@
     --color-bg-primary: var(--bg-primary);
     --color-bg-secondary: var(--bg-secondary);
     --color-bg-tertiary: var(--bg-tertiary);
+    --color-bg-elevated: var(--bg-elevated);
     --color-text-primary: var(--text-primary);
     --color-text-secondary: var(--text-secondary);
     --color-text-tertiary: var(--text-tertiary);
-    --color-primary: #3A30A7;
-    --color-primary-hover: #2A237A;
+    --color-primary: var(--primary);
+    --color-primary-hover: var(--primary-hover);
+    --color-primary-muted: var(--primary-muted);
     --color-border-primary: var(--border-primary);
-    --color-warning: hsl(357, 100%, 45%);
-    --color-warning-hover: hsl(357, 100%, 30%);
-    --color-comparing: #3A30A786;
-    --color-swapping: #3A30A790;
-    --color-sorted: #90d68f;
-    --color-default: #cbd5e1;
+    --color-border-subtle: var(--border-subtle);
+    --color-warning: var(--warning);
+    --color-comparing: var(--comparing);
+    --color-swapping: var(--swapping);
+    --color-sorted: var(--sorted);
+    --color-default: var(--default-bar);
+    --color-accent: var(--accent);
 }
 
 :root {
-    --bg-primary: hsl(215, 18%, 98%);
-    --bg-secondary: hsl(215, 18%, 96%);
-    --bg-tertiary: hsl(215, 18%, 92%);
-    --text-primary: hsl(0, 0%, 0%);
-    --text-secondary: hsl(0, 0%, 25%);
-    --text-tertiary: hsl(0, 0%, 40%);
-    --border-primary: hsl(0, 0%, 0%, 0.3);
+    --bg-primary: hsl(220, 20%, 97%);
+    --bg-secondary: hsl(220, 18%, 94%);
+    --bg-tertiary: hsl(220, 16%, 90%);
+    --bg-elevated: hsl(0, 0%, 100%);
+    --text-primary: hsl(220, 25%, 10%);
+    --text-secondary: hsl(220, 15%, 30%);
+    --text-tertiary: hsl(220, 10%, 50%);
+    --primary: hsl(252, 56%, 42%);
+    --primary-hover: hsl(252, 56%, 35%);
+    --primary-muted: hsl(252, 40%, 92%);
+    --border-primary: hsl(220, 15%, 82%);
+    --border-subtle: hsl(220, 15%, 90%);
+    --warning: hsl(0, 80%, 52%);
+    --comparing: hsl(38, 92%, 55%);
+    --swapping: hsl(350, 85%, 58%);
+    --sorted: hsl(152, 65%, 48%);
+    --default-bar: hsl(225, 20%, 78%);
+    --accent: hsl(252, 56%, 42%);
+
+    /* Glow shadows */
+    --glow-comparing: 0 0 14px hsla(38, 92%, 55%, 0.45);
+    --glow-swapping: 0 0 14px hsla(350, 85%, 58%, 0.45);
+    --glow-sorted: 0 0 10px hsla(152, 65%, 48%, 0.3);
 }
 
 .dark {
-    --bg-primary: hsl(249, 11%, 10%);
-    --bg-secondary: hsl(249, 11%, 12%);
-    --bg-tertiary: hsl(249, 11%, 18%);
-    --text-primary: hsl(0, 0%, 100%);
-    --text-secondary: hsl(0, 0%, 80%);
-    --text-tertiary: hsl(0, 0%, 70%);
-    --border-primary: hsla(0, 0%, 100%, 0.2);
+    --bg-primary: hsl(230, 18%, 9%);
+    --bg-secondary: hsl(230, 16%, 12%);
+    --bg-tertiary: hsl(230, 14%, 16%);
+    --bg-elevated: hsl(230, 16%, 13%);
+    --text-primary: hsl(220, 20%, 95%);
+    --text-secondary: hsl(220, 12%, 72%);
+    --text-tertiary: hsl(220, 8%, 50%);
+    --primary: hsl(252, 70%, 62%);
+    --primary-hover: hsl(252, 70%, 55%);
+    --primary-muted: hsla(252, 60%, 62%, 0.12);
+    --border-primary: hsla(220, 20%, 60%, 0.18);
+    --border-subtle: hsla(220, 20%, 60%, 0.08);
+    --warning: hsl(0, 75%, 58%);
+    --comparing: hsl(42, 95%, 58%);
+    --swapping: hsl(348, 90%, 62%);
+    --sorted: hsl(155, 70%, 52%);
+    --default-bar: hsl(230, 18%, 35%);
+    --accent: hsl(252, 70%, 62%);
+
+    --glow-comparing: 0 0 18px hsla(42, 95%, 58%, 0.5);
+    --glow-swapping: 0 0 18px hsla(348, 90%, 62%, 0.5);
+    --glow-sorted: 0 0 12px hsla(155, 70%, 52%, 0.35);
 }
 
 html {
-  @apply transition-colors duration-300 ease-in-out;
+    @apply transition-colors duration-300 ease-in-out;
 }
 
 body {
-  @apply transition-colors duration-300 ease-in-out;
+    @apply transition-colors duration-300 ease-in-out;
+}
+
+/* ── Custom Range Slider ── */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+    height: 6px;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-primary);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 18px;
+    width: 18px;
+    margin-top: -7px;
+    border-radius: 50%;
+    background: var(--primary);
+    border: 2px solid var(--bg-primary);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 4px var(--primary-muted);
+}
+
+input[type="range"]::-moz-range-track {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-primary);
+}
+
+input[type="range"]::-moz-range-thumb {
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    background: var(--primary);
+    border: 2px solid var(--bg-primary);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    cursor: pointer;
+}
+
+/* ── Custom Scrollbar ── */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--border-primary);
+    border-radius: 999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--text-tertiary);
+}
+
+/* ── Select styling ── */
+select {
+    background-color: transparent;
+}
+
+select option {
+    background-color: var(--bg-elevated);
+    color: var(--text-primary);
+}
+
+/* ── Progress bar animation ── */
+@keyframes progressPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+.progress-active {
+    animation: progressPulse 1.5s ease-in-out infinite;
+}
+
+/* ── Glassmorphism card ── */
+.glass-card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-primary);
+    border-radius: 12px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }

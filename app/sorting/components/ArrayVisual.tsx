@@ -1,23 +1,27 @@
-import ArrayBlock from "./ArrayBlock"
+"use client"
 import ArrayBar from "./ArrayBar"
 import { ArrayBar as ArrayBarType } from "@/types/array"
+import { useMemo } from "react"
 
+export default function ArrayVisual({ array }: { array: ArrayBarType[] }) {
+    const maxValue = useMemo(() => {
+        if (array.length === 0) return 100
+        return Math.max(...array.map(bar => bar.value))
+    }, [array])
 
-export default function ArrayVisual({array}: {array: ArrayBarType[]}){
-    return(
-        <div className="flex flex-col justify-center items-center max-w-[60vw]">
-            <div className="flex gap-1 items-end max-w-[60vw]">
-                {array.map((bar, index) => (
-                    <ArrayBar key={bar.id} value={bar.value} state={bar.state}/>
-                ))}
-            </div>
-            {/*<div className="flex gap-1 items-end mt-2 max-w-[60%]">
-                {array.map((bar, index) => (
-                    <ArrayBlock key={bar.id} value={bar.value} state={bar.state}/>
-                ))}
-            </div>*/}
-            
+    const gap = array.length <= 15 ? 6 : array.length <= 30 ? 4 : array.length <= 50 ? 2 : 1
+
+    return (
+        <div className="flex items-end justify-center w-full h-full px-4 pb-6 pt-2" style={{ gap }}>
+            {array.map((bar) => (
+                <ArrayBar
+                    key={bar.id}
+                    value={bar.value}
+                    state={bar.state}
+                    maxValue={maxValue}
+                    totalBars={array.length}
+                />
+            ))}
         </div>
-        
     )
 }

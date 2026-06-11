@@ -1,7 +1,8 @@
-import { motion } from "motion/react"
-import { TerminalSquare } from "lucide-react"
+"use client"
+import { motion, AnimatePresence } from "motion/react"
+import { TerminalSquare, Trash2 } from "lucide-react"
 import { useVisualizerStore } from "../../store/visualizerStore"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 
 type LogEntry = {
     id: number;
@@ -16,6 +17,7 @@ type LogEntry = {
 export default function LiveLog() {
     const { events, currentStep } = useVisualizerStore()
     const [logs, setLogs] = useState<LogEntry[]>([])
+    const scrollRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         if (events.length === 0) {
@@ -43,14 +45,14 @@ export default function LiveLog() {
                 let content: React.ReactNode = event.message;
 
                 if (event.type === 'compare') {
-                    badge = { text: "COMPARING", type: 'active' }
-                    content = <><span className="font-bold text-[#b4b4d5]">Comparing</span> {event.message.replace(/^Comparing /i, '')}</>
+                    badge = { text: "COMPARE", type: 'active' }
+                    content = <><span className="font-semibold text-comparing">Comparing</span> {event.message.replace(/^Comparing /i, '')}</>
                 } else if (event.type === 'swap') {
-                    badge = { text: "SWAPPING", type: 'swapping' }
-                    content = <><span className="font-bold text-[#e0a69a]">Swapping</span> {event.message.replace(/^Swapping /i, '')}</>
+                    badge = { text: "SWAP", type: 'swapping' }
+                    content = <><span className="font-semibold text-swapping">Swapping</span> {event.message.replace(/^Swapping /i, '')}</>
                 } else if (event.type === 'sorted') {
                      badge = { text: "SORTED", type: 'sorted' }
-                     content = <>{event.message.replace("sorted", '')}<span className="font-bold text-emerald-400/80">sorted</span></>
+                     content = <>{event.message.replace("sorted", '')}<span className="font-semibold text-sorted">sorted</span></>
                 }
 
                 newLogs.push({
@@ -64,45 +66,80 @@ export default function LiveLog() {
         })
     }, [events, currentStep])
 
-    return(
-        <motion.div
-            initial={{ opacity: 1, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3 }}
-            exit={{ opacity: 1, x: 50 }}   
-            className="bg-[#303037] w-96 rounded-2xl h-[70vh] mt-5 p-6 flex flex-col shadow-lg border border-white/5">
-            <div className="flex items-center gap-2 mb-1.5">
-                <TerminalSquare strokeWidth={2.5} size={22} className="text-[#f4a388]"/>
-                <h2 className="text-slate-100 font-bold text-xl tracking-wide">Execution Log</h2>
-            </div>
-            <p className="text-slate-400/80 font-bold text-[10px] tracking-wider uppercase mb-4">Real-time status updates</p>
-            
-            <div className="border-t border-white/10 mb-4 w-full"></div>
+    // Auto-scroll to top (newest entries shown first)
+    useEffect(() => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollTop = 0
+        }
+    }, [logs.length])
 
-            <div className="overflow-y-auto flex flex-col gap-5 pr-2 custom-scrollbar">
-                {[...logs].reverse().map((log) => (
-                    <div key={log.id} className="flex flex-col gap-1">
-                        <div className="flex justify-between items-center">
-                            <span className="text-[#c1866f] text-[11px] font-semibold tracking-wide">{log.timestamp}</span>
-                            {log.badge && (
-                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded tracking-wider ${
-                                    log.badge.type === 'active' 
-                                        ? 'bg-[#4f4f5a] text-[#b4b4d5]' 
-                                        : log.badge.type === 'swapping'
-                                            ? 'bg-[#523d40] text-[#e0a69a]'
-                                            : 'bg-emerald-900/30 text-emerald-400/80'
-                                }`}>
-                                    {log.badge.text}
-                                </span>
-                            )}
-                        </div>
-                        <p className="text-slate-300 text-[14px] leading-relaxed">
-                            {log.content}
-                        </p>
-                    </div>
-                ))}
+    const clearLogs = () => {
+        setLogs([])
+    }
+
+    const badgeStyles = {
+        active: 'bg-comparing/15 text-comparing',
+        swapping: 'bg-swapping/15 text-swapping',
+        sorted: 'bg-sorted/15 text-sorted',
+    }
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, x: 30, width: 0 }}
+            animate={{ opacity: 1, x: 0, width: 360 }}
+            exit={{ opacity: 0, x: 30, width: 0 }}
+            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+            className="glass-card h-[calc(55vh+40px)] p-5 flex flex-col shrink-0 overflow-hidden"
+        >
+            <div className="flex items-center justify-between mb-1">
+                <div className="flex items-center gap-2">
+                    <TerminalSquare strokeWidth={2.5} size={18} className="text-primary" />
+                    <h2 className="text-text-primary font-bold text-base tracking-wide">Execution Log</h2>
+                </div>
+                {logs.length > 0 && (
+                    <button
+                        onClick={clearLogs}
+                        className="flex items-center gap-1 text-text-tertiary hover:text-warning text-xs cursor-pointer transition-colors"
+                    >
+                        <Trash2 size={12} />
+                        Clear
+                    </button>
+                )}
+            </div>
+            <p className="text-text-tertiary font-semibold text-[10px] tracking-wider uppercase mb-3">
+                Real-time status updates
+            </p>
+            
+            <div className="border-t border-border-primary mb-3" />
+
+            <div ref={scrollRef} className="overflow-y-auto flex flex-col gap-3 pr-1 custom-scrollbar flex-1">
+                <AnimatePresence initial={false}>
+                    {[...logs].reverse().map((log) => (
+                        <motion.div
+                            key={log.id}
+                            initial={{ opacity: 0, y: -8 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.15 }}
+                            className="flex flex-col gap-0.5"
+                        >
+                            <div className="flex justify-between items-center">
+                                <span className="text-text-tertiary text-[10px] font-mono">{log.timestamp}</span>
+                                {log.badge && (
+                                    <span className={`text-[9px] font-bold px-2 py-0.5 rounded tracking-wider ${badgeStyles[log.badge.type]}`}>
+                                        {log.badge.text}
+                                    </span>
+                                )}
+                            </div>
+                            <p className="text-text-secondary text-[13px] leading-relaxed">
+                                {log.content}
+                            </p>
+                        </motion.div>
+                    ))}
+                </AnimatePresence>
                 {logs.length === 0 && (
-                    <p className="text-slate-500 text-sm text-center mt-10">No execution logs yet. Start sorting!</p>
+                    <div className="flex-1 flex items-center justify-center">
+                        <p className="text-text-tertiary text-sm text-center">No execution logs yet.<br/>Start sorting!</p>
+                    </div>
                 )}
             </div>
         </motion.div>

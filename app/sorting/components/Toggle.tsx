@@ -1,11 +1,13 @@
+"use client"
 import clsx from "clsx"
-import { motion } from "framer-motion"
+import { motion } from "motion/react"
+
 export default function Toggle({ value, toggle }: { value: boolean, toggle: () => void }) {
     return (
         <div
             className={clsx(
                 "cursor-pointer p-1 rounded-3xl flex items-center w-14 transition-colors ease-in-out duration-300",
-                value ? "bg-primary" : "bg-gray-300"
+                value ? "bg-primary" : "bg-bg-tertiary"
             )}
             onClick={() => toggle()}
         >
