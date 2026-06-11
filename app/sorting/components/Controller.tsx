@@ -211,7 +211,7 @@ export default function Controller({
                 </div>
             </div>
 
-            <div className="w-px h-9 bg-border-primary ml-1 hidden sm:block" />
+            <div className="w-px h-9 bg-border-primary ml-10 hidden sm:block" />
 
                 {/* Live Log Toggle */}
                 <div className="flex items-center gap-2 ml-auto">
