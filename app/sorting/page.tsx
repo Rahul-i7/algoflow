@@ -247,15 +247,15 @@ export default function SortingPage() {
                             <span className="text-sm text-text-secondary">Pivot / Target</span>
                         </div>
                         <div className="flex items-center gap-3">
-                            <div className="h-4 w-4 rounded bg-comparing shadow-[var(--glow-comparing)]" />
+                            <div className="h-4 w-4 rounded bg-comparing shadow-(--glow-comparing)" />
                             <span className="text-sm text-text-secondary">Comparing</span>
                         </div>
                         <div className="flex items-center gap-3">
-                            <div className="h-4 w-4 rounded bg-swapping shadow-[var(--glow-swapping)]" />
+                            <div className="h-4 w-4 rounded bg-swapping shadow-(--glow-swapping)" />
                             <span className="text-sm text-text-secondary">Swapping</span>
                         </div>
                         <div className="flex items-center gap-3">
-                            <div className="h-4 w-4 rounded bg-sorted shadow-[var(--glow-sorted)]" />
+                            <div className="h-4 w-4 rounded bg-sorted shadow-(--glow-sorted)" />
                             <span className="text-sm text-text-secondary">Sorted</span>
                         </div>
                     </div>

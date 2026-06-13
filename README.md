@@ -1,8 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AlgoFlow 🌊
 
-## Getting Started
+**AlgoFlow** is a modern, highly interactive web application built to help you visualize and understand sorting algorithms in real-time. It provides a frame-by-frame, high-precision playground to explore algorithm complexity, data structures, and the beauty of logic.
 
-First, run the development server:
+![AlgoFlow Preview](/public/github-preview.png) *(Preview placeholder)*
+
+## ✨ Features
+
+- **Real-Time Visualization**: Watch algorithms process data arrays step-by-step with precise animations.
+- **Interactive Controls**: Play, pause, adjust playback speed, and randomize arrays to match your learning pace.
+- **Algorithm Analysis**: View detailed information about Time Complexity (Best, Average, Worst), Space Complexity, and live counting of Comparisons and Swaps.
+- **Modern UI**: A beautiful, distraction-free glassmorphic environment designed with smooth animations and dynamic color themes (including dark mode).
+
+## 🚀 Supported Algorithms
+
+AlgoFlow currently supports the following algorithms, each fully animated:
+- **Bubble Sort**: The simplest sorting algorithm, repeatedly stepping through the list and swapping adjacent elements.
+- **Selection Sort**: Repeatedly finding the minimum element from the unsorted part and putting it at the beginning.
+- **Heap Sort**: A comparison-based sorting algorithm utilizing a binary heap data structure.
+- **Quick Sort**: A highly efficient divide-and-conquer algorithm.
+
+## 🛠️ Tech Stack
+
+Built with cutting-edge web technologies:
+- **[Next.js 16](https://nextjs.org/)** (React Framework)
+- **[Tailwind CSS v4](https://tailwindcss.com/)** (Styling & Layout)
+- **[Framer Motion](https://motion.dev/)** (Smooth physics-based animations)
+- **[Zustand](https://zustand-demo.pmnd.rs/)** (Lightweight state management)
+- **[Lucide React](https://lucide.dev/)** (Beautiful SVG icons)
+
+## 💻 Getting Started
+
+First, install the dependencies:
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+Then, run the development server:
 
 ```bash
 npm run dev
@@ -10,27 +48,14 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🤝 Contributing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/rahul-i7/algoflow/issues).
 
-## Learn More
+## 📝 License
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is open source and available under the [MIT License](LICENSE).
