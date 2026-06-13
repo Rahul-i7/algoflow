@@ -2,7 +2,7 @@
 
 **AlgoFlow** is a modern, highly interactive web application built to help you visualize and understand sorting algorithms in real-time. It provides a frame-by-frame, high-precision playground to explore algorithm complexity, data structures, and the beauty of logic.
 
-![AlgoFlow Preview](/public/github-preview.png) *(Preview placeholder)*
+![AlgoFlow Preview](/public/github-preview.png)
 
 ## ✨ Features
 
