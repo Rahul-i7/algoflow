@@ -124,10 +124,10 @@ export default function SortingPage() {
             />
 
             {/* Main visualization area */}
-            <div className="flex w-full gap-4 px-5 flex-1 mt-5">
-                <div className="flex flex-col grow">
+            <div className="flex flex-col lg:flex-row w-full gap-4 px-3 sm:px-5 flex-1 mt-5">
+                <div className="flex flex-col w-full lg:w-3/4 grow">
                     {/* Stats bar */}
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-2 gap-3 sm:gap-0">
                         <div className="flex items-center gap-2">
                             <h2 className="text-xl font-semibold text-text-secondary">{selectedAlgo.name}</h2>
                             {selectedAlgo.stable && (
@@ -136,16 +136,16 @@ export default function SortingPage() {
                                 </span>
                             )}
                         </div>
-                        <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-2 bg-primary/3 px-3 py-1.5 rounded-2xl">
+                        <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto">
+                            <div className="flex flex-1 sm:flex-none items-center justify-center gap-2 bg-primary/3 px-3 py-1.5 rounded-2xl">
                                 <GitCompare size={13} className="text-comparing" />
-                                <span className="text-sm font-semibold tracking-wider text-text-tertiary uppercase">Comparisons</span>
-                                <span className="text-md font-bold text-primary font-mono">{comparisons}</span>
+                                <span className="text-xs sm:text-sm font-semibold tracking-wider text-text-tertiary uppercase">Comparisons</span>
+                                <span className="text-sm sm:text-md font-bold text-primary font-mono">{comparisons}</span>
                             </div>
-                            <div className="flex items-center gap-2 bg-primary/3 px-3 py-1.5 rounded-2xl">
+                            <div className="flex flex-1 sm:flex-none items-center justify-center gap-2 bg-primary/3 px-3 py-1.5 rounded-2xl">
                                 <ArrowDownUp size={13} className="text-swapping" />
-                                <span className="text-sm font-semibold tracking-wider text-text-tertiary uppercase">Swaps</span>
-                                <span className="text-md font-bold text-primary font-mono">{swaps}</span>
+                                <span className="text-xs sm:text-sm font-semibold tracking-wider text-text-tertiary uppercase">Swaps</span>
+                                <span className="text-sm sm:text-md font-bold text-primary font-mono">{swaps}</span>
                             </div>
                         </div>
                     </div>
@@ -203,7 +203,7 @@ export default function SortingPage() {
             </div>
 
             {/* Info Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 px-5 mt-30 pb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-3 sm:px-5 mt-10 lg:mt-30 pb-6">
                 {/* Time Complexity */}
                 <div className="glass-card p-5">
                     <div className="flex items-center gap-2 mb-4">
@@ -267,13 +267,13 @@ export default function SortingPage() {
             </div>
 
             {/* Algorithm Description */}
-            <div className="px-5 pb-8">
-                <div className="glass-card p-8 mt-2">
+            <div className="px-3 sm:px-5 pb-8">
+                <div className="glass-card p-5 sm:p-8 mt-2">
                     <p className="text-md font-semibold text-text-tertiary uppercase mb-2">About {selectedAlgo.name}</p>
-                    <p className="text-md text-text-secondary leading-relaxed">{selectedAlgo.description}</p>
-                    <div className="mt-5 mx-auto border border-border-primary"/>
-                    <div className="mt-8 flex justify-between">
-                        <div className="w-[48%]">
+                    <p className="text-sm sm:text-md text-text-secondary leading-relaxed">{selectedAlgo.description}</p>
+                    <div className="mt-5 mx-auto border-t border-border-primary"/>
+                    <div className="mt-8 flex flex-col lg:flex-row justify-between gap-8 lg:gap-0">
+                        <div className="w-full lg:w-[48%]">
                             <p className="text-md font-semibold text-text-tertiary uppercase mb-3">Psuedocode</p>
                             <div className="h-92 overflow-y-auto bg-[#2c2c3a] rounded-xl border border-border-primary p-4 mt-4">
                                 <pre className="whitespace-pre-wrap text-sm leading-relaxed text-slate-100">
@@ -281,10 +281,10 @@ export default function SortingPage() {
                                 </pre>
                             </div>
                         </div>
-                        <div className="h-85 my-auto w-1 rounded-full bg-border-primary"/>
-                        <div className="w-[48%]">
+                        <div className="hidden lg:block h-85 my-auto w-1 rounded-full bg-border-primary"/>
+                        <div className="w-full lg:w-[48%]">
                             <p className="text-md font-semibold text-text-tertiary uppercase mb-3">Implementation</p>
-                            <div className="flex mt-2 gap-2">
+                            <div className="flex mt-2 gap-2 flex-wrap">
                                 {Object.entries(languages).map(([key, value]) => (
                                     <div
                                         key={key}

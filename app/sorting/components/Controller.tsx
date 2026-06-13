@@ -69,11 +69,11 @@ export default function Controller({
     }
 
     return (
-        <div className="glass-card flex flex-col gap-4 w-[96vw] mx-auto mt-6 px-5 py-4">
+        <div className="glass-card flex flex-col gap-4 w-[96vw] mx-auto mt-6 px-3 sm:px-5 py-4">
             {/* Top row: Algorithm + Actions */}
-            <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex items-center gap-3 flex-wrap justify-center sm:justify-start">
                 {/* Algorithm Selector */}
-                <div className="relative border border-border-primary rounded-lg px-3 py-2.5 min-w-[180px] z-20">
+                <div className="relative border border-border-primary rounded-lg px-3 py-2.5 w-full sm:w-auto sm:min-w-[180px] z-20">
                     <span className="absolute -top-2 left-2 bg-bg-elevated px-1.5 text-xs font-semibold tracking-wider text-text-tertiary uppercase">
                         Algorithm
                     </span>
@@ -86,7 +86,7 @@ export default function Controller({
                 {/* Randomize */}
                 <motion.button
                     id="randomize-btn"
-                    className="flex items-center gap-2 border border-primary/40 bg-primary-muted px-4 py-2.5 rounded-lg cursor-pointer hover:bg-primary/15 transition-colors text-sm font-medium text-primary"
+                    className="flex items-center justify-center gap-2 w-full sm:w-auto border border-primary/40 bg-primary-muted px-4 py-2.5 rounded-lg cursor-pointer hover:bg-primary/15 transition-colors text-sm font-medium text-primary"
                     onClick={randomize}
                     whileTap={{ scale: 0.95 }}
                     transition={{ duration: 0.15 }}
@@ -145,11 +145,11 @@ export default function Controller({
                 )}
 
                 {/* Divider */}
-                <div className="w-px h-9 bg-border-primary mx-1 hidden sm:block" />
+                <div className="w-full h-px sm:w-px sm:h-9 bg-border-primary mx-1 sm:hidden block" />
 
-                <div className="flex items-center gap-5 flex-wrap">
+                <div className="flex items-center gap-4 sm:gap-5 flex-wrap w-full lg:w-auto justify-center sm:justify-start">
                     {/* Array Size */}
-                    <div className="flex items-center gap-2 flex-1 min-w-[200px] max-w-[400px]">
+                    <div className="flex items-center gap-2 flex-1 min-w-[140px] max-w-[400px]">
                         <span className="text-[10px] font-semibold tracking-wider text-text-tertiary uppercase whitespace-nowrap">
                             Size
                         </span>
@@ -178,11 +178,11 @@ export default function Controller({
                     </div>
 
                     {/* Speed Control */}
-                    <div className="flex items-center gap-2 flex-1 min-w-[200px] max-w-[350px]">
+                    <div className="flex items-center gap-2 flex-1 min-w-[280px] max-w-[350px]">
                         <span className="text-[10px] font-semibold tracking-wider text-text-tertiary uppercase whitespace-nowrap">
                             Speed
                         </span>
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-1 flex-wrap">
                             {SPEED_OPTIONS.map((speed) => (
                                 <button
                                     key={speed}
@@ -198,11 +198,11 @@ export default function Controller({
                         </div>
                     </div>
                 </div>
-
-                <div className="w-px h-9 bg-border-primary ml-10 hidden sm:block" />
+                <div className="w-full h-px sm:w-px sm:h-9 bg-border-primary mx-1 sm:ml-auto block sm:hidden" />
+                <div className="w-px h-9 bg-border-primary ml-auto hidden sm:block" />
 
                 {/* Live Log Toggle */}
-                <div className="flex items-center gap-2 ml-auto">
+                <div className="flex items-center gap-2 sm:ml-0 mx-auto sm:mx-0">
                     <span className="text-xs font-semibold tracking-wider text-text-tertiary uppercase">Live Log</span>
                     <Toggle value={liveLog} toggle={() => setLiveLog(!liveLog)} />
                 </div>
