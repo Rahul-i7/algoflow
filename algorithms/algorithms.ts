@@ -13,7 +13,88 @@ export const algorithms = [
     "stable": true,
     "spaceComplexity": "O(1)",
     "spaceComplexityInfo": "Bubble Sort is an inplace algorithm and only uses constant amount of extra space.",
-    "function": bubbleSortFunction
+    "function": bubbleSortFunction,
+    "psuedocode": `\`\`\`
+    algorithm bubbleSort(array)
+
+    n = array.length
+
+    for i from 0 to n - 2
+        swapped = false
+
+        for j from 0 to n - i - 2
+            if array[j] > array[j + 1]
+                swap array[j] and array[j + 1]
+                swapped = true
+
+        if swapped is false
+            break // Array is sorted
+
+    end algorithm
+    \`\`\``,
+    "implementation": {
+      "python": `\`\`\`
+    def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n - 1):
+        swapped = False
+        for j in range(0, n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                swapped = True
+        if not swapped:
+            break
+    \`\`\``,
+    "javascript": `\`\`\`
+    function bubbleSort(arr) {
+    const n = arr.length;
+    let swapped;
+    do {
+        swapped = false;
+        for (let i = 0; i < n - 1; i++) {
+        if (arr[i] > arr[i + 1]) {
+            [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
+            swapped = true;
+        }
+        }
+    } while (swapped);
+    }
+    \`\`\``,
+    "java": `\`\`\`
+    public static void bubbleSort(int[] arr) {
+        int n = arr.length;
+        boolean swapped;
+        for (int i = 0; i < n - 1; i++) {
+            swapped = false;
+            for (int j = 0; j < n - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                    swapped = true;
+                }
+            }
+            if (!swapped) break;
+        }
+    }
+    \`\`\``,
+    "cpp": `\`\`\`
+    void bubbleSort(std::vector<int>& arr) {
+        int n = arr.size();
+        bool swapped;
+        for (int i = 0; i < n - 1; i++) {
+            swapped = false;
+            for (int j = 0; j < n - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    std::swap(arr[j], arr[j + 1]);
+                    swapped = true;
+                }
+            }
+            if (!swapped) break;
+        }
+    }
+    \`\`\``,
+    }
   },
   {
     "name": "Selection Sort",
@@ -26,7 +107,14 @@ export const algorithms = [
     "stable": false,
     "spaceComplexity": "O(1)",
     "spaceComplexityInfo": "Selection Sort is an inplace algorithm and only uses constant amount of extra space.",
-    "function": selectionSortFunction
+    "function": selectionSortFunction,
+    "psuedocode": "\`\`\`\n    algorithm selectionSort(array)\n\n    n = array.length\n\n    for i from 0 to n - 2\n        minIndex = i\n\n        for j from i + 1 to n - 1\n            if array[j] < array[minIndex]\n                minIndex = j\n\n        if minIndex is not i\n            swap array[i] and array[minIndex]\n\n    end algorithm\n    \`\`\`",
+    "implementation": {
+      "python": "\`\`\`\n    def selection_sort(arr):\n    n = len(arr)\n    for i in range(n - 1):\n        min_index = i\n        for j in range(i + 1, n):\n            if arr[j] < arr[min_index]:\n                min_index = j\n        \n        if min_index != i:\n            arr[i], arr[min_index] = arr[min_index], arr[i]\n    \`\`\`",
+    "javascript": "\`\`\`\n    function selectionSort(arr) {\n    const n = arr.length;\n    for (let i = 0; i < n - 1; i++) {\n        let minIndex = i;\n        for (let j = i + 1; j < n; j++) {\n        if (arr[j] < arr[minIndex]) {\n            minIndex = j;\n        }\n        }\n        if (minIndex !== i) {\n        [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];\n        }\n    }\n    }\n    \`\`\`",
+    "java": "\`\`\`\n    public static void selectionSort(int[] arr) {\n    int n = arr.length;\n    for (int i = 0; i < n - 1; i++) {\n        int minIndex = i;\n        for (int j = i + 1; j < n; j++) {\n        if (arr[j] < arr[minIndex]) {\n            minIndex = j;\n        }\n        }\n        if (minIndex != i) {\n        int temp = arr[i];\n        arr[i] = arr[minIndex];\n        arr[minIndex] = temp;\n        }\n    }\n    }\n    \`\`\`",
+    "cpp": "\`\`\`\n    void selectionSort(std::vector<int>& arr) {\n    int n = arr.size();\n    for (int i = 0; i < n - 1; i++) {\n        int minIndex = i;\n        for (int j = i + 1; j < n; j++) {\n        if (arr[j] < arr[minIndex]) {\n            minIndex = j;\n        }\n        }\n        if (minIndex != i) {\n        std::swap(arr[i], arr[minIndex]);\n        }\n    }\n    }\n    \`\`\`",
+    }
   },
   {
     "name": "Heap Sort",
@@ -39,7 +127,14 @@ export const algorithms = [
     "stable": false,
     "spaceComplexity": "O(1)",
     "spaceComplexityInfo": "Heap Sort is an inplace algorithm and only uses constant amount of extra space.",
-    "function": heapSortFunction
+    "function": heapSortFunction,
+    "psuedocode": "\`\`\`\n    algorithm heapSort(array)\n\n    n = array.length\n\n    // Build max heap\n    for i from n/2 - 1 down to 0\n        heapify(array, n, i)\n\n    // One by one extract elements\n    for i from n - 1 down to 1\n        swap array[0] and array[i]\n        heapify(array, i, 0)\n\n    end algorithm\n    \`\`\`",
+    "implementation": {
+      "python": "\`\`\`\n    def heap_sort(arr):\n    n = len(arr)\n\n    # Build max heap\n    for i in range(n // 2 - 1, -1, -1):\n        heapify(arr, n, i)\n\n    # One by one extract elements\n    for i in range(n - 1, 0, -1):\n        arr[i], arr[0] = arr[0], arr[i]\n        heapify(arr, i, 0)\n    \`\`\`",
+    "javascript": "\`\`\`\n    function heapSort(arr) {\n    const n = arr.length;\n\n    // Build max heap\n    for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {\n        heapify(arr, n, i);\n    }\n\n    // One by one extract elements\n    for (let i = n - 1; i > 0; i--) {\n        [arr[0], arr[i]] = [arr[i], arr[0]];\n        heapify(arr, i, 0);\n    }\n    }\n    \`\`\`",
+    "java": "\`\`\`\n    public static void heapSort(int[] arr) {\n    int n = arr.length;\n\n    // Build max heap\n    for (int i = n / 2 - 1; i >= 0; i--) {\n        heapify(arr, n, i);\n    }\n\n    // One by one extract elements\n    for (int i = n - 1; i > 0; i--) {\n        int temp = arr[0];\n        arr[0] = arr[i];\n        arr[i] = temp;\n        heapify(arr, i, 0);\n    }\n    }\n    \`\`\`",
+    "cpp": "\`\`\`\n    void heapSort(std::vector<int>& arr) {\n    int n = arr.size();\n\n    // Build max heap\n    for (int i = n / 2 - 1; i >= 0; i--) {\n        heapify(arr, n, i);\n    }\n\n    // One by one extract elements\n    for (int i = n - 1; i > 0; i--) {\n        std::swap(arr[0], arr[i]);\n        heapify(arr, i, 0);\n    }\n    }\n    \`\`\`",
+    }
   },
   {
     "name": "Quick Sort",
@@ -52,7 +147,14 @@ export const algorithms = [
     "stable": false,
     "spaceComplexity": "O(1)",
     "spaceComplexityInfo": "Quick Sort is an inplace algorithm and only uses constant amount of extra space.",
-    "function": quickSortFunction
+    "function": quickSortFunction,
+    "psuedocode": "\`\`\`\n    algorithm selectionSort(array)\n\n    n = array.length\n\n    for i from 0 to n - 2\n        minIndex = i\n\n        for j from i + 1 to n - 1\n            if array[j] < array[minIndex]\n                minIndex = j\n\n        if minIndex is not i\n            swap array[i] and array[minIndex]\n\n    end algorithm\n    \`\`\`",
+    "implementation": {
+      "python": "\`\`\`\n    def selection_sort(arr):\n    n = len(arr)\n    for i in range(n - 1):\n        min_index = i\n        for j in range(i + 1, n):\n            if arr[j] < arr[min_index]:\n                min_index = j\n        \n        if min_index != i:\n            arr[i], arr[min_index] = arr[min_index], arr[i]\n    \`\`\`",
+      "javascript": "\`\`\`\n    function selectionSort(arr) {\n    const n = arr.length;\n    for (let i = 0; i < n - 1; i++) {\n        let minIndex = i;\n        for (let j = i + 1; j < n; j++) {\n        if (arr[j] < arr[minIndex]) {\n            minIndex = j;\n        }\n        }\n        if (minIndex !== i) {\n        [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];\n        }\n    }\n    }\n    \`\`\`",
+      "java": "\`\`\`\n    public static void selectionSort(int[] arr) {\n    int n = arr.length;\n    for (int i = 0; i < n - 1; i++) {\n        int minIndex = i;\n        for (int j = i + 1; j < n; j++) {\n        if (arr[j] < arr[minIndex]) {\n            minIndex = j;\n        }\n        }\n        if (minIndex != i) {\n        int temp = arr[i];\n        arr[i] = arr[minIndex];\n        arr[minIndex] = temp;\n        }\n    }\n    }\n    \`\`\`",
+      "cpp": "\`\`\`\n    void selectionSort(std::vector<int>& arr) {\n    int n = arr.size();\n    for (int i = 0; i < n - 1; i++) {\n        int minIndex = i;\n        for (int j = i + 1; j < n; j++) {\n        if (arr[j] < arr[minIndex]) {\n            minIndex = j;\n        }\n        }\n        if (minIndex != i) {\n        std::swap(arr[i], arr[minIndex]);\n        }\n    }\n    }\n    \`\`\`",
+    }
   }
 ]
 

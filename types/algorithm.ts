@@ -12,5 +12,12 @@ export type algorithm = {
   "stable": boolean,
   "spaceComplexity": string,
   "spaceComplexityInfo": string,
-  "function": (input: ArrayBar[]) => SortEvent[]
+  "function": (input: ArrayBar[]) => SortEvent[],
+  "psuedocode": string,
+  "implementation": {
+    "python": string,
+    "javascript": string,
+    "java": string,
+    "cpp": string,
+  }
 }

@@ -9,6 +9,7 @@ import { useVisualizerStore } from "../store/visualizerStore"
 import LiveLog from "./components/LiveLog"
 import { motion, AnimatePresence } from "motion/react"
 import { Trophy, ArrowDownUp, GitCompare, Clock } from "lucide-react"
+import clsx from "clsx"
 
 const BASE_DELAY_MS = 300
 
@@ -22,7 +23,10 @@ export default function SortingPage() {
     const [sortingComplete, setSortingComplete] = useState(false)
     const store = useVisualizerStore()
     const intervalRef = useRef<NodeJS.Timeout | null>(null)
+    const [implementationLanguage, setImplementationLanguage] = useState<keyof typeof languages>("python")
 
+    const languages = { python: "Python", javascript: "JavaScript", java: "Java", cpp: "C++" }
+    
     const randomize = useCallback(() => {
         // Stop playback and clear old events
         setPlay(false)
@@ -120,28 +124,28 @@ export default function SortingPage() {
             />
 
             {/* Main visualization area */}
-            <div className="flex w-full gap-4 px-5 flex-1 mt-4">
+            <div className="flex w-full gap-4 px-5 flex-1 mt-5">
                 <div className="flex flex-col grow">
                     {/* Stats bar */}
                     <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
-                            <h2 className="text-lg font-semibold text-text-primary">{selectedAlgo.name}</h2>
+                            <h2 className="text-xl font-semibold text-text-secondary">{selectedAlgo.name}</h2>
                             {selectedAlgo.stable && (
-                                <span className="text-[10px] font-bold tracking-wider uppercase bg-sorted/15 text-sorted px-2 py-0.5 rounded">
+                                <span className="text-xs font-semibold uppercase bg-sorted/15 text-sorted px-2 py-0.5 rounded-xl">
                                     Stable
                                 </span>
                             )}
                         </div>
                         <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-2 bg-bg-secondary px-3 py-1.5 rounded-lg">
+                            <div className="flex items-center gap-2 bg-primary/3 px-3 py-1.5 rounded-2xl">
                                 <GitCompare size={13} className="text-comparing" />
-                                <span className="text-[10px] font-semibold tracking-wider text-text-tertiary uppercase">Comparisons</span>
-                                <span className="text-sm font-bold text-primary font-mono">{comparisons}</span>
+                                <span className="text-sm font-semibold tracking-wider text-text-tertiary uppercase">Comparisons</span>
+                                <span className="text-md font-bold text-primary font-mono">{comparisons}</span>
                             </div>
-                            <div className="flex items-center gap-2 bg-bg-secondary px-3 py-1.5 rounded-lg">
+                            <div className="flex items-center gap-2 bg-primary/3 px-3 py-1.5 rounded-2xl">
                                 <ArrowDownUp size={13} className="text-swapping" />
-                                <span className="text-[10px] font-semibold tracking-wider text-text-tertiary uppercase">Swaps</span>
-                                <span className="text-sm font-bold text-primary font-mono">{swaps}</span>
+                                <span className="text-sm font-semibold tracking-wider text-text-tertiary uppercase">Swaps</span>
+                                <span className="text-md font-bold text-primary font-mono">{swaps}</span>
                             </div>
                         </div>
                     </div>
@@ -199,25 +203,25 @@ export default function SortingPage() {
             </div>
 
             {/* Info Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 px-5 mt-4 pb-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 px-5 mt-30 pb-6">
                 {/* Time Complexity */}
                 <div className="glass-card p-5">
                     <div className="flex items-center gap-2 mb-4">
                         <Clock size={14} className="text-primary" />
-                        <p className="text-[10px] font-bold tracking-wider text-text-tertiary uppercase">Time Complexity</p>
+                        <p className="text-sm font-semibold text-text-tertiary uppercase">Time Complexity</p>
                     </div>
                     <div className="space-y-2.5">
                         <div className="flex justify-between items-center">
-                            <span className="text-sm text-text-secondary">Best Case</span>
-                            <span className="text-sm font-mono font-semibold text-sorted bg-sorted/10 px-3 py-1 rounded-md">{selectedAlgo.complexity.best}</span>
+                            <span className="text-sm font-semibold text-text-secondary">Best Case</span>
+                            <span className="text-sm font-semibold text-sorted bg-sorted/10 px-3 py-1 rounded-md">{selectedAlgo.complexity.best}</span>
                         </div>
                         <div className="flex justify-between items-center">
-                            <span className="text-sm text-text-secondary">Average Case</span>
-                            <span className="text-sm font-mono font-semibold text-primary bg-primary-muted px-3 py-1 rounded-md">{selectedAlgo.complexity.average}</span>
+                            <span className="text-sm font-semibold text-text-secondary">Average Case</span>
+                            <span className="text-sm font-semibold text-primary bg-primary-muted px-3 py-1 rounded-md">{selectedAlgo.complexity.average}</span>
                         </div>
                         <div className="flex justify-between items-center">
-                            <span className="text-sm text-text-secondary">Worst Case</span>
-                            <span className="text-sm font-mono font-semibold text-warning bg-warning/10 px-3 py-1 rounded-md">{selectedAlgo.complexity.worst}</span>
+                            <span className="text-sm font-semibold text-text-secondary">Worst Case</span>
+                            <span className="text-sm font-semibold text-warning bg-warning/10 px-3 py-1 rounded-md">{selectedAlgo.complexity.worst}</span>
                         </div>
                     </div>
                 </div>
@@ -226,11 +230,11 @@ export default function SortingPage() {
                 <div className="glass-card p-5">
                     <div className="flex items-center gap-2 mb-4">
                         <div className="w-3 h-3 rounded-sm bg-primary" />
-                        <p className="text-[10px] font-bold tracking-wider text-text-tertiary uppercase">Space Complexity</p>
+                        <p className="text-sm font-semibold text-text-tertiary uppercase">Space Complexity</p>
                     </div>
                     <div className="flex justify-between items-center mb-4">
-                        <span className="text-sm text-text-secondary">Stack Space</span>
-                        <span className="text-sm font-mono font-semibold text-primary bg-primary-muted px-3 py-1 rounded-md">{selectedAlgo.spaceComplexity}</span>
+                        <span className="text-sm font-semibold text-text-secondary">Stack Space</span>
+                        <span className="text-sm font-semibold text-primary bg-primary-muted px-3 py-1 rounded-md">{selectedAlgo.spaceComplexity}</span>
                     </div>
                     <p className="text-xs text-text-tertiary leading-relaxed">{selectedAlgo.spaceComplexityInfo}</p>
                 </div>
@@ -239,24 +243,24 @@ export default function SortingPage() {
                 <div className="glass-card p-5">
                     <div className="flex items-center gap-2 mb-4">
                         <div className="w-3 h-3 rounded-full bg-comparing" />
-                        <p className="text-[10px] font-bold tracking-wider text-text-tertiary uppercase">Color Legend</p>
+                        <p className="text-sm font-semibold text-text-tertiary uppercase">Color Legend</p>
                     </div>
                     <div className="space-y-2.5">
                         <div className="flex items-center gap-3">
                             <div className="h-4 w-4 rounded bg-primary" />
-                            <span className="text-sm text-text-secondary">Pivot / Target</span>
+                            <span className="text-sm font-semibold text-text-secondary">Pivot / Target</span>
                         </div>
                         <div className="flex items-center gap-3">
                             <div className="h-4 w-4 rounded bg-comparing shadow-(--glow-comparing)" />
-                            <span className="text-sm text-text-secondary">Comparing</span>
+                            <span className="text-sm font-semibold text-text-secondary">Comparing</span>
                         </div>
                         <div className="flex items-center gap-3">
                             <div className="h-4 w-4 rounded bg-swapping shadow-(--glow-swapping)" />
-                            <span className="text-sm text-text-secondary">Swapping</span>
+                            <span className="text-sm font-semibold text-text-secondary">Swapping</span>
                         </div>
                         <div className="flex items-center gap-3">
                             <div className="h-4 w-4 rounded bg-sorted shadow-(--glow-sorted)" />
-                            <span className="text-sm text-text-secondary">Sorted</span>
+                            <span className="text-sm font-semibold text-text-secondary">Sorted</span>
                         </div>
                     </div>
                 </div>
@@ -264,11 +268,42 @@ export default function SortingPage() {
 
             {/* Algorithm Description */}
             <div className="px-5 pb-8">
-                <div className="glass-card p-5">
-                    <p className="text-[10px] font-bold tracking-wider text-text-tertiary uppercase mb-2">About {selectedAlgo.name}</p>
-                    <p className="text-sm text-text-secondary leading-relaxed">{selectedAlgo.description}</p>
+                <div className="glass-card p-8 mt-2">
+                    <p className="text-md font-semibold text-text-tertiary uppercase mb-2">About {selectedAlgo.name}</p>
+                    <p className="text-md text-text-secondary leading-relaxed">{selectedAlgo.description}</p>
+                    <div className="mt-5 mx-auto border border-border-primary"/>
+                    <div className="mt-8 flex justify-between">
+                        <div className="w-[48%]">
+                            <p className="text-md font-semibold text-text-tertiary uppercase mb-3">Psuedocode</p>
+                            <div className="h-92 overflow-y-auto bg-[#2c2c3a] rounded-xl border border-border-primary p-4 mt-4">
+                                <pre className="whitespace-pre-wrap text-sm leading-relaxed text-slate-100">
+                                    {selectedAlgo.psuedocode.replace(/```\w*\n?/g, '').replace(/```/g, '').trim()}
+                                </pre>
+                            </div>
+                        </div>
+                        <div className="h-85 my-auto w-1 rounded-full bg-border-primary"/>
+                        <div className="w-[48%]">
+                            <p className="text-md font-semibold text-text-tertiary uppercase mb-3">Implementation</p>
+                            <div className="flex mt-2 gap-2">
+                                {Object.entries(languages).map(([key, value]) => (
+                                    <div
+                                        key={key}
+                                        className={clsx("rounded-full px-3 border border-accent p-2 cursor-pointer transition-colors duration-100", implementationLanguage === key && "text-white bg-primary")}
+                                        onClick={() => setImplementationLanguage(key as keyof typeof languages)}>
+                                        {value}
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="h-80 overflow-y-auto bg-[#2c2c3a] rounded-xl border border-border-primary p-4 mt-4">
+                                <pre className="whitespace-pre-wrap text-sm leading-relaxed text-slate-100">
+                                    {selectedAlgo.implementation[implementationLanguage].replace(/```\w*\n?/g, '').replace(/```/g, '').trim()}
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
     )
 }
